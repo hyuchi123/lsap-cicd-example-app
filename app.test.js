@@ -27,3 +27,19 @@ describe("API Endpoints", () => {
     expect(res.text).toContain("Welcome to the CI/CD Workshop!");
   });
 });
+
+describe('GET /api/time endpoint', () => {
+    it('should return a valid ISO-formatted date string and status 200', async () => {
+        const response = await request(app).get('/api/time');
+        
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('currentTime');
+
+        const dateString = response.body.currentTime;
+        
+        // 驗證 ISO 8601 格式 (這是一個用於檢查格式的常見 regex)
+        const isoRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/; 
+
+        expect(dateString).toMatch(isoRegex);
+    });
+});
